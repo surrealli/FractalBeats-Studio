@@ -1,5 +1,9 @@
 # 🌌 FractalBeats Studio
 
+[![Live Demo — Launch App](https://img.shields.io/badge/Live_Demo-Launch_App-22c55e?style=for-the-badge&logo=github)](https://surrealli.github.io/FractalBeats-Studio/FractalBeats-Standalone.html)
+
+**[▶ Open FractalBeats Studio in your browser](https://surrealli.github.io/FractalBeats-Studio/FractalBeats-Standalone.html)** — no download or installation needed.
+
 **Real-time audio-reactive fractal visualizer with 6 switchable screens.** Load any music file (or use your microphone) and pick a fractal universe to fly through. Runs 100% in your browser — no install, no server.
 
 **Independent repository:** [surrealli/FractalBeats-Studio](https://github.com/surrealli/FractalBeats-Studio)
