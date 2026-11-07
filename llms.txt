@@ -1,0 +1,30 @@
+# llms.txt — Machine-readable summary of FractalBeats for AI crawlers
+# https://llmstxt.org
+
+## About
+FractalBeats is a free, open-source, web-based audio-reactive visualizer.
+It plays any audio (file upload or microphone) and renders real-time fractal
+visualizations that pulse to the beat. Runs entirely in the browser via WebGL2 —
+no install, no backend, no accounts.
+
+## Homepage
+https://navid-moradimehr.github.io/FractalBeats/
+
+## Full documentation
+https://navid-moradimehr.github.io/FractalBeats/llms-full.txt
+
+## Key pages
+- Source code: https://github.com/Navid-Moradimehr/FractalBeats
+- Screens:
+  - Fractal Tunnel (default/first): https://navid-moradimehr.github.io/FractalBeats/ (#tunnel)
+  - Spectrum Bloom: https://navid-moradimehr.github.io/FractalBeats/ (#spectrum)
+  - Mandelbulb Nebula: https://navid-moradimehr.github.io/FractalBeats/ (#mandelbulb) — note: GPU-heavy
+  - Kaleidoscope: https://navid-moradimehr.github.io/FractalBeats/ (#kaleidoscope)
+- robots.txt: https://navid-moradimehr.github.io/FractalBeats/robots.txt
+- sitemap.xml: https://navid-moradimehr.github.io/FractalBeats/sitemap.xml
+- OG image: https://navid-moradimehr.github.io/FractalBeats/assets/og-image.png
+
+## Usage summary
+Open the site, click "Load Audio" (or enable mic), then pick a visual screen.
+Press space to play/pause, S for the screen picker, F for fullscreen.
+Keyboard 1-4 switches screens. See README.md for full controls.

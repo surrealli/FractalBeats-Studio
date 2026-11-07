@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FractalBeats — Free Audio-Reactive Fractal Visualizer</title>
+
+  <!-- ── Primary SEO ─────────────────────────────────────────── -->
+  <meta name="description" content="Free audio-reactive fractal visualizer in your browser. Load a song, use your mic, and watch 6 real-time screens react to the music. No install, no account." />
+  <meta name="author" content="Navid Moradimehr" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="google-site-verification" content="UlHZYK9fYhoTRUKbC5rEcaMEJhV1OoC-GA8Vo22VLYw" />
+  <link rel="canonical" href="https://navid-moradimehr.github.io/FractalBeats/" />
+
+  <!-- ── Open Graph (Facebook / LinkedIn / WhatsApp / Discord) ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FractalBeats" />
+  <meta property="og:title" content="FractalBeats — Free Audio-Reactive Fractal Visualizer" />
+  <meta property="og:description" content="Free audio-reactive fractal visualizer that runs in your browser. Load any song or use your mic and watch 6 real-time screens react to the music. No install." />
+  <meta property="og:url" content="https://navid-moradimehr.github.io/FractalBeats/" />
+  <meta property="og:image" content="https://navid-moradimehr.github.io/FractalBeats/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A ray-marched 3D Mandelbulb fractal rendered live by FractalBeats" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ── Twitter / X card ────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FractalBeats — Free Audio-Reactive Fractal Visualizer" />
+  <meta name="twitter:description" content="Free audio-reactive fractal visualizer in your browser — 6 real-time screens driven by any song or your mic. No install." />
+    <meta name="twitter:image" content="https://navid-moradimehr.github.io/FractalBeats/assets/og-image.png" />
+
+  <!-- ── Icons & manifest ────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <!-- ── Structured data (Google rich results + AI engines) ──── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "FractalBeats",
+        "alternateName": "FractalBeats — Audio-Reactive Fractal Visualizer",
+        "url": "https://navid-moradimehr.github.io/FractalBeats/",
+        "description": "Free in-browser, audio-reactive fractal visualizer. Load any music file or use your microphone and watch six real-time screens — a ray-marched Mandelbulb, a kali-tunnel fly-through, a 2D spectrum a mirror kaleidoscope and a Mandelbrot explorer — react to the music. No install, no account.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript and WebGL",
+        "inLanguage": "en",
+        "genre": ["Generative Art", "Music Visualization", "Fractals"],
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Organization", "name": "Navid Moradimehr", "url": "https://github.com/Navid-Moradimehr" },
+        "publisher": { "@type": "Organization", "name": "Navid Moradimehr", "url": "https://github.com/Navid-Moradimehr" },
+        "thumbnailUrl": "https://navid-moradimehr.github.io/FractalBeats/assets/previews/mandelbulb.jpg",
+        "screenshot": [
+          "https://navid-moradimehr.github.io/FractalBeats/assets/previews/mandelbulb.jpg",
+          "https://navid-moradimehr.github.io/FractalBeats/assets/previews/tunnel.jpg",
+          "https://navid-moradimehr.github.io/FractalBeats/assets/previews/kaleidoscope.jpg",
+          "https://navid-moradimehr.github.io/FractalBeats/assets/previews/spectrum.jpg"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "name": "FractalBeats",
+        "url": "https://navid-moradimehr.github.io/FractalBeats/",
+        "description": "Free audio-reactive fractal visualizer that runs in your browser — six real-time screens driven by any song or your microphone."
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="stage"></div>
+
+  <header>
+    <div class="brand"><span class="logo">🌌</span><span class="title">FractalBeats</span></div>
+    <button id="screens-btn" class="btn icon" title="Choose visualization (S)">⊞</button>
+    <button id="play-btn" class="btn primary" title="Play / Pause (Space)">▶ Play</button>
+    <div class="transport">
+      <span class="time-label" id="time-cur">0:00</span>
+      <input type="range" id="seekbar" min="0" max="1000" value="0" step="1" />
+      <span class="time-label" id="time-total">0:00</span>
+      <span class="track-name" id="track-name">No track loaded</span>
+    </div>
+    <div class="spacer"></div>
+    <select id="source-select" class="btn" title="Audio source">
+      <option value="none">Source: None</option>
+      <option value="file">Source: File</option>
+      <option value="mic">Source: Mic</option>
+    </select>
+    <input type="file" id="audio-file" accept="audio/*" hidden />
+    <button id="load-btn" class="btn" title="Load audio file">🎵 Load</button>
+    <button id="gui-btn" class="btn icon hide-desktop" title="Settings">⚙</button>
+    <button id="fs-btn" class="btn icon hide-sm" title="Fullscreen (F)">⛶</button>
+  </header>
+
+  <div id="gui-host"></div>
+
+  <section id="picker-overlay">
+    <h1 class="picker-title">FractalBeats</h1>
+        <p class="picker-sub">Pick a visual screen — switch anytime with keys 1–6 or the ⊞ button</p>
+    <div class="card-grid" id="card-grid">
+      <!-- Screen cards are pre-rendered here (server-side) so search engines and
+           no-JS users see every screen. Keep this list in sync with SCREENS in
+           src/main.js; ui.js upgrades these cards with live behavior + previews. -->
+      <div class="screen-card" data-screen-id="tunnel">
+        <div class="preview">
+          <video class="preview-video" muted loop playsinline preload="metadata"
+                 poster="assets/previews/tunnel.jpg" data-src="assets/previews/tunnel.webm"></video>
+          <span class="icon">🕳️</span>
+        </div>
+        <div class="name">Fractal Tunnel</div>
+        <div class="tagline">Infinite fly-through — the beat drives your speed through a kali tunnel.</div>
+        <span class="key-hint">1</span>
+      </div>
+      <div class="screen-card" data-screen-id="spectrum">
+        <div class="preview">
+          <video class="preview-video" muted loop playsinline preload="metadata"
+                 poster="assets/previews/spectrum.jpg" data-src="assets/previews/spectrum.webm"></video>
+          <span class="icon">📊</span>
+        </div>
+        <div class="name">Spectrum Bloom</div>
+        <div class="tagline">Lightweight radial spectrum with beat-driven particle bursts — easy on any GPU.</div>
+        <span class="key-hint">2</span>
+      </div>
+      <div class="screen-card" data-screen-id="mandelbulb">
+        <div class="preview">
+          <video class="preview-video" muted loop playsinline preload="metadata"
+                 poster="assets/previews/mandelbulb.jpg" data-src="assets/previews/mandelbulb.webm"></video>
+          <span class="icon">🪐</span>
+        </div>
+        <div class="name">Mandelbulb Nebula</div>
+        <div class="tagline">The classic — a ray-marched 3D fractal that breathes with your music.</div>
+        <div class="note">⚠ Heavy on some setups — ray-marching 3D needs a decent GPU; run it if your device keeps up smoothly.</div>
+        <span class="key-hint">3</span>
+      </div>
+      <div class="screen-card" data-screen-id="kaleidoscope">
+        <div class="preview">
+          <video class="preview-video" muted loop playsinline preload="metadata"
+                 poster="assets/previews/kaleidoscope.jpg" data-src="assets/previews/kaleidoscope.webm"></video>
+          <span class="icon">🔮</span>
+        </div>
+        <div class="name">Kaleidoscope</div>
+        <div class="tagline">Mirror-symmetric kali bloom — every beat reshapes the mandala.</div>
+        <span class="key-hint">4</span>
+      </div>
+      <div class="screen-card" data-screen-id="mandelbrot">
+        <div class="preview"><video class="preview-video" muted loop playsinline preload="metadata" poster="assets/previews/mandelbrot.jpg" data-src="assets/previews/mandelbrot.webm"></video><span class="icon">🌀</span></div>
+        <div class="name">Mandelbrot Spiral Tunnel</div>
+        <div class="tagline">Dive through translucent ice-blue Mandelbrot spirals — the music guides your flight.</div>
+        <span class="key-hint">5</span>
+      </div>
+      <div class="screen-card" data-screen-id="mandelbrot-map">
+        <div class="preview"><video class="preview-video" muted loop playsinline preload="metadata" poster="assets/previews/mandelbrot-map.jpg" data-src="assets/previews/mandelbrot-map.webm"></video><span class="icon">🗺️</span></div>
+        <div class="name">Mandelbrot Map Flight</div>
+        <div class="tagline">Choose your own fractal region on the map, then fly through it with your music.</div>
+        <span class="key-hint">6</span>
+      </div>
+    </div>
+  </section>
+
+  <div id="drop-overlay">Drop audio file to play 🎧</div>
+  <div id="toasts"></div>
+   <div id="hint-bar"><kbd>Space</kbd> play · <kbd>1–6</kbd> screens · <kbd>S</kbd> picker · <kbd>F</kbd> fullscreen · drop a file anywhere</div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

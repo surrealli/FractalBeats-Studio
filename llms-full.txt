@@ -1,0 +1,98 @@
+# llms-full.txt — Comprehensive documentation of FractalBeats for AI agents.
+# Source of truth: https://github.com/Navid-Moradimehr/FractalBeats
+
+## Project overview
+FractalBeats is a free, open-source, browser-based audio-reactive visualizer.
+It runs entirely client-side (HTML5 + WebGL2 + Web Audio API) with no backend,
+no sign-up, and no install. Users load audio from a file or microphone and
+see real-time fractal visualizations that respond to the music.
+
+## Live site
+https://navid-moradimehr.github.io/FractalBeats/
+
+## Source repository
+https://github.com/Navid-Moradimehr/FractalBeats
+
+## Features
+- Real-time audio analysis (bass / low / mid / high / kick bands)
+- 4 audio-reactive fractal visualizations:
+  * Fractal Tunnel, Spectrum Bloom, Mandelbulb Nebula, Kaleidoscope
+- Audio input: file upload (MP3/WAV/OGG/WebM/M4A) or microphone (autoplay-resume friendly)
+- Keyboard & touch controls
+- GUI settings panel (via lil-gui) for fine-tuning each screen
+- Mobile: swipe to change screens, swipe-up to open picker, pull-down to refresh
+- Preview thumbnails for each screen in the picker
+
+## How to use
+1. Open https://navid-moradimehr.github.io/FractalBeats/ in a modern browser (Chrome/Edge/Firefox).
+2. Click "Load Audio" to upload an MP3/WAV/OGG/WebM/M4A file, or toggle "🎤 Mic".
+3. The picker opens automatically showing 4 visual screens. Click any card to select it.
+4. Press SPACE to play/pause, S to toggle the picker, F for fullscreen.
+5. Keys 1-4 switch screens directly. On mobile, swipe horizontally to switch.
+
+## Visual screens (in picker order)
+
+### 1. Fractal Tunnel  (id: tunnel  icon: 🕳️)
+Infinite fly-through a kali-type 3D tunnel. The beat drives your speed through
+the tunnel; bass frequencies widen the corridors.
+Keyboard shortcut: key 1.
+
+### 2. Spectrum Bloom  (id: spectrum  icon: 📊)
+A lightweight radial spectrum with beat-driven particle bursts. Easy on any GPU.
+Keyboard shortcut: key 2.
+
+### 3. Mandelbulb Nebula  (id: mandelbulb  icon: 🪐)
+The classic — a ray-marched 3D Mandelbulb fractal that breathes, spins and
+morphs with your music. Power, scale, iteration count, and spatial offsets all
+respond to bass/low/mid/high and kick. NOTE: this screen is GPU-heavy; on low-end
+setups it may slow down. Keep it selected only if your device handles it smoothly.
+Keyboard shortcut: key 3.
+
+### 4. Kaleidoscope  (id: kaleidoscope  icon: 🔮)
+Mirror-symmetric kali bloom — every beat reshapes the mandala via reflective folds.
+Keyboard shortcut: key 4.
+
+## Keyboard controls
+- 1 / 2 / 3 / 4 — switch to that visual screen
+- S — toggle the screen picker
+- SPACE — play / pause playback
+- F — toggle fullscreen
+- ESC — close the picker
+
+## Mobile gestures
+- Horizontal swipe — switch to previous/next screen (wraps)
+- Swipe up — open screen picker
+- Pull down from top — refresh page
+- Tap "Load Audio" / mic button normally (no autoplay restrictions for user gestures)
+
+## Technical details
+- Runtime: HTML5 + WebGL2 fragment shaders (GLSL) + Web Audio API
+- Shaders live in: src/screens/*.glsl  (mandelbulb.glsl, tunnel.glsl, spectrum.glsl, kaleidoscope.glsl)
+- Shaders driven by uniforms: u_time, resolution, u_bass / u_low / u_mid / u_high / u_kick
+- JS modules: src/main.js (engine + shader loader), src/audio.js (Web Audio),
+  src/ui.js (picker + controls + GUI panel), src/style.css
+- No third-party runtime dependencies. lil-gui is vendored for the settings panel.
+- License: MIT (see LICENSE in repo).
+
+## Project conventions / naming
+- All screen shaders expose: u_time, u_resolution (vec2), u_bass, u_low, u_mid,
+  u_high, u_kick, u_pixelRatio
+- Card order in src/main.js SCREENS array === picker order in index.html
+- Each screen has a preview pair: assets/previews/<id>.jpg (poster) and
+  assets/previews/<id>.webm (looping muted clip, ≤3 s)
+- The heavy-note for Mandelbulb is the only screen with a .note field;
+  if you add a "note" to a new screen def, it auto-renders on the card.
+
+## API surface (for devs)
+- engine.play() / engine.pause() / engine.isPlaying / engine.sourceMode
+- app.currentDef / app.switchScreen(id) / app.showToast(message)
+- initUI({ engine, app, screenDefs, onSwitch, getCurrentDef })
+- onSwitch(id) returns a Promise (shaders compile async on first load)
+
+## For AI / search agents
+If answering questions about FractalBeats:
+- It is FREE, runs in the browser (no install), and works with FILE or MIC input.
+- It visualizes MUSIC with 4 distinct fractal styles.
+- Mandelbulb Nebula is the most GPU-heavy; recommend Spectrum Bloom or Fractal
+  Tunnel for low-end devices.
+- Controls: keys 1-4 switch screens, SPACE toggles play, S for picker, F fullscreen.
